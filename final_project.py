@@ -3,7 +3,7 @@ import random
 import math
 import matplotlib.pyplot as plt
 # placeholders - change to answer questions
-N = 30
+N = 25
 T = 2.5
 array = np.array(np.random.choice([-1,1], size=(N,N)))
 print(array)
