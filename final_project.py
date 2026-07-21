@@ -29,7 +29,7 @@ for i in range(10000):
    #choose a random point on the lattice
    r = random.randint(0,(N-1))
    c = random.randint(0,(N-1))
-   energy = 4*J*squareLattice[r][c]*(squareLattice[(r+1) % N][c]+squareLattice[(r-1) % N][c]+squareLattice[r][(c+1) % N]+squareLattice[r][(c-1) % N]+h)
+   energy = 4*J*squareLattice[r][c]*(squareLattice[(r+1) % N][c]+squareLattice[(r-1) % N][c]+squareLattice[r][(c+1) % N]+squareLattice[r][(c-1) % N])+squareLattice[r][c]*h
    if energy < 0:
        #if calculated energy is less than 0, flip the spin
        squareLattice[r][c] *= -1
