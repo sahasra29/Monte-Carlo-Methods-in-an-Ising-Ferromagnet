@@ -3,16 +3,34 @@ import random
 import math
 import matplotlib.pyplot as plt
 
-
 # placeholders - change to answer questions
 N = 25 #length of the square lattice
-T = 2.5 #temperature
+T = 0 #temperature
 J = 1 #a constant that represents the strength and orientation of the interactions of spins
 h = 0 #external magnetic field parameter. if not implementing optionExtension, h = 0
-
+stabilityDeadband = 100
 
 squareLattice = np.array(np.random.choice([-1,1], size=(N,N)))
-print(squareLattice)
+previousSquareLattice = np.array(np.random.choice([-1,1], size=(N,N)))
+consecutiveEqualStates = 0
+
+def setPreviousSquareLattice():
+    global squareLattice
+    for i in range(N):
+        for j in range(N):
+            previousSquareLattice[i][j] = squareLattice[i][j]
+
+def checkStability():
+    global squareLattice, previousSquareLattice, consecutiveEqualStates, stabilityDeadband
+    if np.array_equal(squareLattice,previousSquareLattice):
+        consecutiveEqualStates += 1
+    else:
+        consecutiveEqualStates = 0
+        setPreviousSquareLattice()
+    if consecutiveEqualStates>=stabilityDeadband:
+        return True
+    else:
+        return False
 
 
 plt.ion()  # Turn on interactive mode
@@ -25,8 +43,12 @@ plt.axis('off')
 
 
 #implement Metropolis-Hastings algorithm
-for i in range(10000):
+for i in range(100000):
    #choose a random point on the lattice
+   if checkStability():
+       print("The Ising Model is stable at Step:",i)
+       break
+   
    r = random.randint(0,(N-1))
    c = random.randint(0,(N-1))
    energy = 4*J*squareLattice[r][c]*(squareLattice[(r+1) % N][c]+squareLattice[(r-1) % N][c]+squareLattice[r][(c+1) % N]+squareLattice[r][(c-1) % N])+squareLattice[r][c]*h
@@ -39,10 +61,11 @@ for i in range(10000):
        n = random.random()
        if n < threshhold:
            squareLattice[r][c] *= -1
+
    img.set_data(squareLattice)
    title_text.set_text(f"Ising Model Simulation | Step: {i}")
    fig.canvas.draw_idle()
-   plt.pause(0.01)
+   plt.pause(0.0001)
 
 
 plt.ioff()
