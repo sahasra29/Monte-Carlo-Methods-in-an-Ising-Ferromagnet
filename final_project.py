@@ -15,10 +15,8 @@ previousSquareLattice = np.array(np.random.choice([-1,1], size=(N,N)))
 consecutiveEqualStates = 0
 
 def setPreviousSquareLattice():
-    global squareLattice
-    for i in range(N):
-        for j in range(N):
-            previousSquareLattice[i][j] = squareLattice[i][j]
+    global squareLattice, previousSquareLattice
+    previousSquareLattice = np.copy(squareLattice)
 
 def checkStability():
     global squareLattice, previousSquareLattice, consecutiveEqualStates, stabilityDeadband
