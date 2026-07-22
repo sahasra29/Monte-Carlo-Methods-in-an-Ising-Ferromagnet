@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 
 # placeholders - change to answer questions
 N = 25 #length of the square lattice
-T = 0 #temperature
+T = 1 #temperature
 J = 1 #a constant that represents the strength and orientation of the interactions of spins
 h = 0 #external magnetic field parameter. if not implementing optionExtension, h = 0
-stabilityDeadband = 100
+stabilityDeadband = 10*N**2
 
 squareLattice = np.array(np.random.choice([-1,1], size=(N,N)))
 previousSquareLattice = np.array(np.random.choice([-1,1], size=(N,N)))
@@ -24,7 +24,7 @@ def checkStability():
         consecutiveEqualStates += 1
     else:
         consecutiveEqualStates = 0
-        setPreviousSquareLattice()
+    setPreviousSquareLattice()
     if consecutiveEqualStates>=stabilityDeadband:
         return True
     else:
