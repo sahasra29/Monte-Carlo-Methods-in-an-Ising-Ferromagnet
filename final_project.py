@@ -9,6 +9,7 @@ T = 1 #temperature
 J = 1 #a constant that represents the strength and orientation of the interactions of spins
 h = 0 #external magnetic field parameter. if not implementing optionExtension, h = 0
 stabilityDeadband = 10*N**2
+animationOn = True
 
 squareLattice = np.array(np.random.choice([-1,1], size=(N,N)))
 previousSquareLattice = np.copy(squareLattice)
@@ -30,7 +31,8 @@ def checkStability(flipped):
         return False
 
 
-#plt.ion()  # Turn on interactive mode
+if animationOn:
+    plt.ion()  # Turn on interactive mode
 # black is representing a spin of 1, white is -1
 fig, ax = plt.subplots(figsize=(6, 6))
 img = ax.imshow(squareLattice, cmap='binary', vmin=-1, vmax=1)
@@ -61,12 +63,13 @@ for i in range(1000000):
            squareLattice[r][c] *= -1
            current_flip = True
    flipped2 = current_flip
-
-   #img.set_data(squareLattice)
+   if animationOn:
+    img.set_data(squareLattice)
+    fig.canvas.draw_idle()
+    plt.pause(0.0001)
    title_text.set_text(f"Ising Model Simulation | Step: {i}")
-   #fig.canvas.draw_idle()
-   #plt.pause(0.0001)
 
 img.set_data(squareLattice)
-#plt.ioff()
+if animationOn:
+    plt.ioff()
 plt.show()
